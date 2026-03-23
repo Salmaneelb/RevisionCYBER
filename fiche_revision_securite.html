@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiche de Révision — Sécurité & Réseaux</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+:root{
+  --bg:#f7f6f2; --paper:#fff; --ink:#1a1a2e; --ink2:#52526e;
+  --border:#e4e1da; --accent:#2563eb; --abg:#eff6ff;
+  --green:#15803d; --gbg:#f0fdf4; --red:#dc2626; --rbg:#fef2f2;
+  --yellow:#b45309; --ybg:#fffbeb; --purple:#7c3aed; --pbg:#f5f3ff;
+  --teal:#0d9488; --tbg:#f0fdfa; --coral:#c2410c; --cbg:#fff7ed;
+  --mono:'JetBrains Mono',monospace; --sans:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);padding:0 0 80px}
+
+/* HEADER */
+.hdr{background:var(--ink);color:#fff;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hdr-left h1{font-size:20px;font-weight:700;margin-bottom:2px}
+.hdr-left p{font-size:12px;color:#94a3b8;font-family:var(--mono)}
+.hdr-pills{display:flex;gap:8px;flex-wrap:wrap}
+.hdr-pill{font-size:10px;font-family:var(--mono);padding:4px 10px;border-radius:100px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);letter-spacing:.5px;text-transform:uppercase}
+
+/* NAV */
+.nav{background:var(--paper);border-bottom:1px solid var(--border);padding:0 32px;display:flex;gap:0;position:sticky;top:0;z-index:100;overflow-x:auto}
+.nav-btn{font-family:var(--sans);font-size:13px;font-weight:500;padding:14px 20px;border:none;background:none;cursor:pointer;color:var(--ink2);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.nav-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:700}
+.nav-btn:hover:not(.active){color:var(--ink);border-bottom-color:var(--border)}
+
+/* CONTENT */
+.sections{max-width:900px;margin:0 auto;padding:28px 20px}
+.section{display:none}.section.active{display:block}
+
+/* SECTION TITLE */
+.sec-title{font-size:22px;font-weight:700;margin-bottom:6px}
+.sec-sub{font-size:13px;color:var(--ink2);margin-bottom:24px;line-height:1.6}
+
+/* CARD */
+.card{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px}
+.card-title{font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin:0}
+.tbl th{background:#f8f9fa;font-family:var(--mono);font-size:10px;font-weight:600;text-align:left;padding:8px 12px;border:1px solid var(--border);color:var(--ink2);text-transform:uppercase;letter-spacing:.5px}
+.tbl td{border:1px solid var(--border);padding:8px 12px;vertical-align:top;line-height:1.5;font-size:13px}
+.tbl tr:nth-child(even) td{background:#fafafa}
+
+/* GRID 2 */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:600px){.g2,.g3{grid-template-columns:1fr}}
+
+/* MINI CARD */
+.mcard{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.mcard-lbl{font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.8px;color:var(--ink2);margin-bottom:6px}
+.mcard-val{font-size:13px;font-weight:500;line-height:1.5}
+
+/* BADGE */
+.badge{display:inline-block;font-size:10px;font-family:var(--mono);padding:2px 8px;border-radius:100px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-right:4px}
+.b-red{background:var(--rbg);color:var(--red);border:1px solid #fecaca}
+.b-green{background:var(--gbg);color:var(--green);border:1px solid #bbf7d0}
+.b-blue{background:var(--abg);color:var(--accent);border:1px solid #bfdbfe}
+.b-purple{background:var(--pbg);color:var(--purple);border:1px solid #ddd6fe}
+.b-yellow{background:var(--ybg);color:var(--yellow);border:1px solid #fde68a}
+.b-teal{background:var(--tbg);color:var(--teal);border:1px solid #99f6e4}
+.b-coral{background:var(--cbg);color:var(--coral);border:1px solid #fed7aa}
+
+/* CODE */
+.code{font-family:var(--mono);font-size:11px;background:#f0f4f8;border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin:8px 0;line-height:1.8;overflow-x:auto;white-space:pre;color:var(--ink)}
+.code .kw{color:#2563eb;font-weight:600}
+.code .cm{color:#94a3b8}
+
+/* RULE BOX */
+.rule{border-left:3px solid var(--accent);padding:10px 14px;background:var(--abg);border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;line-height:1.7}
+.rule.green{border-color:var(--green);background:var(--gbg)}
+.rule.red{border-color:var(--red);background:var(--rbg)}
+.rule.purple{border-color:var(--purple);background:var(--pbg)}
+.rule.yellow{border-color:var(--yellow);background:var(--ybg)}
+.rule.teal{border-color:var(--teal);background:var(--tbg)}
+
+/* KEY POINT */
+.keypoint{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)}
+.keypoint:last-child{border-bottom:none}
+.kp-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.kp-text{font-size:13px;line-height:1.6}
+.kp-text strong{font-weight:700}
+
+/* PORTS TABLE */
+.port-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
+.port-row:last-child{border-bottom:none}
+.port-num{font-family:var(--mono);font-size:12px;font-weight:600;min-width:50px;color:var(--accent)}
+.port-name{font-weight:500;min-width:80px}
+.port-desc{color:var(--ink2);font-size:12px}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--border);margin:18px 0}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <h1>📋 Fiche de Révision — Sécurité & Réseaux</h1>
+    <p>Examen UTC 505 · Antisèche complète · 4 thèmes</p>
+  </div>
+  <div class="hdr-pills">
+    <span class="hdr-pill">🔴 Sécurité</span>
+    <span class="hdr-pill">🟣 Crypto</span>
+    <span class="hdr-pill">🟡 DMZ</span>
+    <span class="hdr-pill">🟢 VPN</span>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="show('sec1',this)">🔴 Sécurité & Attaques</button>
+  <button class="nav-btn" onclick="show('sec2',this)">🟣 Chiffrement & Crypto</button>
+  <button class="nav-btn" onclick="show('sec3',this)">🟡 DMZ & pfSense</button>
+  <button class="nav-btn" onclick="show('sec4',this)">🟢 Proxy & VPN</button>
+</nav>
+
+<div class="sections">
+
+<!-- ═══════════════ SECTION 1 : SÉCURITÉ ═══════════════ -->
+<div class="section active" id="sec1">
+  <div class="sec-title">🔴 Sécurité & Attaques</div>
+  <div class="sec-sub">Attaques réseau classiques, détection dans les logs, pare-feu iptables et contre-mesures.</div>
+
+  <!-- Attaques -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--red)"></span>Les attaques réseau à connaître</div>
+    <table class="tbl">
+      <tr><th>Attaque</th><th>Mécanisme</th><th>Risque principal</th><th>Contre-mesure</th></tr>
+      <tr><td><strong>ARP Poisoning</strong></td><td>Envoi de fausses réponses ARP pour associer son MAC à une IP légitime</td><td>MITM — interception/modification du trafic</td><td>ARP statique, port security sur les switches, HTTPS/SSH</td></tr>
+      <tr><td><strong>Brute Force SSH</strong></td><td>Essai systématique de mots de passe sur SSH</td><td>Accès non autorisé au serveur</td><td>Fail2ban, clé publique, désactiver root, changer port 22</td></tr>
+      <tr><td><strong>DoS / DDoS</strong></td><td>Saturation de la bande passante ou des ressources d'un service</td><td>Indisponibilité du service</td><td>Rate limiting, pare-feu, CDN, anycast</td></tr>
+      <tr><td><strong>DNS Spoofing</strong></td><td>Empoisonnement du cache DNS pour rediriger vers un faux site</td><td>Phishing, vol de credentials</td><td>DNSSEC, vérification des certificats TLS</td></tr>
+      <tr><td><strong>Open Relay SMTP</strong></td><td>Serveur SMTP qui accepte et relaie des mails sans authentification</td><td>Spam massif, mise sur liste noire</td><td>Authentification SASL, filtrer les IP sources</td></tr>
+    </table>
+  </div>
+
+  <!-- Lire les logs -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--yellow)"></span>Lire un log auth.log — détecter une attaque SSH</div>
+    <div class="code"><span class="cm"># Extrait typique de /var/log/auth.log</span>
+Jun 3 18:45:23 sshd[2890]: <span class="kw">Failed password</span> for invalid user admin from <span class="kw">203.0.113.5</span> port 48123
+Jun 3 18:45:26 sshd[2891]: <span class="kw">Failed password</span> for root from <span class="kw">203.0.113.5</span> port 48125
+Jun 3 18:45:28 sshd[2892]: <span class="kw">Failed password</span> for user1 from <span class="kw">203.0.113.5</span> port 48126</div>
+    <div class="rule red">⚠️ <strong>Brute Force SSH détecté</strong> : même IP (203.0.113.5), tentatives répétées en quelques secondes, utilisateurs différents (admin, root, user1).</div>
+    <div class="g2" style="margin-top:12px">
+      <div class="mcard">
+        <div class="mcard-lbl">Réaction immédiate</div>
+        <div class="mcard-val">Bloquer l'IP via iptables :<br><code style="font-family:var(--mono);font-size:11px">iptables -A INPUT -s 203.0.113.5 -j DROP</code></div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-lbl">Outil automatique</div>
+        <div class="mcard-val"><strong>Fail2ban</strong> — surveille les logs et bannit automatiquement les IP après N échecs configurables</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Config SSH sécurisée -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--green)"></span>Durcissement SSH — /etc/ssh/sshd_config</div>
+    <div class="g2">
+      <div>
+        <div class="code">PermitRootLogin <span class="kw">no</span>
+PasswordAuthentication <span class="kw">no</span>
+PubkeyAuthentication <span class="kw">yes</span>
+Port <span class="kw">2222</span>
+MaxAuthTries <span class="kw">3</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="keypoint"><span class="kp-icon">🔑</span><div class="kp-text"><strong>Clé publique</strong> : seule méthode vraiment sûre — la clé privée ne quitte jamais le client</div></div>
+        <div class="keypoint"><span class="kp-icon">🚫</span><div class="kp-text"><strong>PermitRootLogin no</strong> : même avec le bon mot de passe, root ne peut pas se connecter</div></div>
+        <div class="keypoint"><span class="kp-icon">🔢</span><div class="kp-text"><strong>Changer le port</strong> : réduit le bruit des scans automatiques (sécurité par l'obscurité, pas suffisant seul)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iptables -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--purple)"></span>iptables — règles essentielles</div>
+    <table class="tbl">
+      <tr><th>Objectif</th><th>Règle iptables</th></tr>
+      <tr><td>Bloquer une IP</td><td><code style="font-family:var(--mono);font-size:11px">iptables -A INPUT -s 203.0.113.5 -j DROP</code></td></tr>
+      <tr><td>Autoriser SSH entrant</td><td><code style="font-family:var(--mono);font-size:11px">iptables -A INPUT -p tcp --dport 22 -j ACCEPT</code></td></tr>
+      <tr><td>Autoriser connexions établies</td><td><code style="font-family:var(--mono);font-size:11px">iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT</code></td></tr>
+      <tr><td>Bloquer tout le reste (INPUT)</td><td><code style="font-family:var(--mono);font-size:11px">iptables -A INPUT -j DROP</code></td></tr>
+      <tr><td>SNAT (masquerade)</td><td><code style="font-family:var(--mono);font-size:11px">iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</code></td></tr>
+      <tr><td>DNAT (port forwarding)</td><td><code style="font-family:var(--mono);font-size:11px">iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to 10.0.0.10:80</code></td></tr>
+    </table>
+    <div class="rule" style="margin-top:12px">💡 <strong>Ordre des chaînes iptables :</strong> PREROUTING → FORWARD/INPUT → POSTROUTING. Le NAT entrant (DNAT) va en PREROUTING, le NAT sortant (SNAT/MASQUERADE) va en POSTROUTING.</div>
+  </div>
+
+  <!-- Ports clés -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--teal)"></span>Ports réseau à connaître par cœur</div>
+    <div class="g2">
+      <div>
+        <div class="port-row"><span class="port-num">22</span><span class="port-name">SSH</span><span class="port-desc">Administration sécurisée</span></div>
+        <div class="port-row"><span class="port-num">25</span><span class="port-name">SMTP</span><span class="port-desc">Envoi mail inter-serveurs</span></div>
+        <div class="port-row"><span class="port-num">53</span><span class="port-name">DNS</span><span class="port-desc">Résolution de noms (UDP+TCP)</span></div>
+        <div class="port-row"><span class="port-num">80</span><span class="port-name">HTTP</span><span class="port-desc">Web non chiffré</span></div>
+        <div class="port-row"><span class="port-num">143</span><span class="port-name">IMAP</span><span class="port-desc">Messagerie non chiffrée</span></div>
+      </div>
+      <div>
+        <div class="port-row"><span class="port-num">443</span><span class="port-name">HTTPS</span><span class="port-desc">Web chiffré TLS</span></div>
+        <div class="port-row"><span class="port-num">465</span><span class="port-name">SMTPS</span><span class="port-desc">SMTP chiffré (déprécié)</span></div>
+        <div class="port-row"><span class="port-num">587</span><span class="port-name">SMTP sub.</span><span class="port-desc">Envoi authentifié client→serveur</span></div>
+        <div class="port-row"><span class="port-num">993</span><span class="port-name">IMAPS</span><span class="port-desc">IMAP chiffré TLS</span></div>
+        <div class="port-row"><span class="port-num">1194</span><span class="port-name">OpenVPN</span><span class="port-desc">VPN (UDP par défaut)</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION 2 : CRYPTOGRAPHIE ═══════════════ -->
+<div class="section" id="sec2">
+  <div class="sec-title">🟣 Chiffrement & Cryptographie</div>
+  <div class="sec-sub">Symétrique vs asymétrique, certificats TLS, GPG, et les pièges classiques à l'exam.</div>
+
+  <!-- Symétrique vs Asymétrique -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--purple)"></span>Symétrique vs Asymétrique</div>
+    <table class="tbl">
+      <tr><th></th><th>Chiffrement symétrique</th><th>Chiffrement asymétrique</th></tr>
+      <tr><td><strong>Clés</strong></td><td>1 clé partagée (même pour chiffrer et déchiffrer)</td><td>Paire : clé publique + clé privée</td></tr>
+      <tr><td><strong>Exemple</strong></td><td>AES-256, DES, 3DES, ChaCha20</td><td>RSA, ECC, GPG, TLS handshake</td></tr>
+      <tr><td><strong>Vitesse</strong></td><td>⚡ Très rapide — adapté aux gros volumes</td><td>🐢 Lent — réservé aux échanges de clés</td></tr>
+      <tr><td><strong>Problème</strong></td><td>Comment partager la clé secrètement ?</td><td>Aucun — la clé publique peut être distribuée librement</td></tr>
+      <tr><td><strong>Usage</strong></td><td>Chiffrement des données en transit ou au repos</td><td>Échange de clés, signature, authentification</td></tr>
+    </table>
+    <div class="rule purple" style="margin-top:12px">💡 <strong>En pratique (TLS) :</strong> on utilise l'asymétrique pour échanger une clé de session, puis le symétrique pour chiffrer les données. Le meilleur des deux mondes.</div>
+  </div>
+
+  <!-- GPG -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--purple)"></span>GPG — chiffrement de fichiers</div>
+    <div class="g2">
+      <div>
+        <div class="code"><span class="cm"># Chiffrer un fichier pour Bob</span>
+gpg <span class="kw">--encrypt</span> --recipient bob@example.com fichier.pdf
+
+<span class="cm"># Bob déchiffre avec sa clé privée</span>
+gpg <span class="kw">--decrypt</span> fichier.pdf.gpg</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;justify-content:center">
+        <div class="keypoint"><span class="kp-icon">🔓</span><div class="kp-text">Chiffrement avec la <strong>clé publique</strong> de Bob → seul Bob peut déchiffrer (avec sa clé privée)</div></div>
+        <div class="keypoint"><span class="kp-icon">📦</span><div class="kp-text">Même si le fichier est intercepté en transit, il est <strong>illisible</strong> sans la clé privée</div></div>
+        <div class="keypoint"><span class="kp-icon">✉️</span><div class="kp-text">Indépendant du protocole de transport (SMTP, FTP, HTTP…)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TLS/SSL -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--teal)"></span>TLS/SSL — comment ça fonctionne</div>
+    <div class="g3">
+      <div class="mcard">
+        <div class="mcard-lbl">1. Handshake</div>
+        <div class="mcard-val">Client et serveur négocient la version TLS, les algorithmes et échangent les certificats</div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-lbl">2. Certificat</div>
+        <div class="mcard-val">Le serveur prouve son identité avec un certificat signé par une <strong>Autorité de Certification (AC)</strong></div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-lbl">3. Session chiffrée</div>
+        <div class="mcard-val">Une clé de session symétrique (AES) est établie — toutes les données suivantes sont chiffrées</div>
+      </div>
+    </div>
+    <div class="rule teal" style="margin-top:12px">💡 <strong>Rôle du certificat TLS :</strong> authentifier le serveur (éviter le MITM) + permettre l'échange sécurisé de la clé de session. Sans certificat valide → ton navigateur affiche une alerte.</div>
+  </div>
+
+  <!-- Pièges exam -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--red)"></span>Pièges classiques à l'exam</div>
+    <div class="keypoint"><span class="kp-icon">⚠️</span><div class="kp-text"><strong>Déchiffrement ≠ Décryptage</strong> — déchiffrer = utiliser la clé légitime. Décrypter = retrouver le message <em>sans</em> la clé (attaque force brute).</div></div>
+    <div class="keypoint"><span class="kp-icon">⚠️</span><div class="kp-text"><strong>SMTP + TLS ≠ chiffrement de bout en bout</strong> — le TLS chiffre le transport mais le message peut être stocké en clair sur le serveur destinataire.</div></div>
+    <div class="keypoint"><span class="kp-icon">⚠️</span><div class="kp-text"><strong>Clé publique ≠ secret</strong> — elle peut être distribuée librement. C'est la clé <em>privée</em> qui doit rester secrète à tout prix.</div></div>
+    <div class="keypoint"><span class="kp-icon">⚠️</span><div class="kp-text"><strong>Ordinateur quantique</strong> — menace les algorithmes asymétriques (RSA, ECC) basés sur la factorisation. AES-256 reste résistant avec des clés suffisamment longues.</div></div>
+    <div class="keypoint"><span class="kp-icon">✅</span><div class="kp-text"><strong>GPG vs SMTP chiffré</strong> — GPG est préférable car le chiffrement est fait <em>avant</em> l'envoi, indépendamment du protocole.</div></div>
+  </div>
+
+  <!-- AAA -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Mécanismes AAA</div>
+    <div class="g3">
+      <div class="mcard">
+        <div class="mcard-lbl">Authentication</div>
+        <div class="mcard-val"><strong>Qui es-tu ?</strong><br>Mot de passe, clé, certificat, MFA</div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-lbl">Authorization</div>
+        <div class="mcard-val"><strong>Qu'as-tu le droit de faire ?</strong><br>Permissions, rôles, ACL</div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-lbl">Accounting</div>
+        <div class="mcard-val"><strong>Qu'as-tu fait ?</strong><br>Logs, audit trails, SIEM</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION 3 : DMZ & PFSENSE ═══════════════ -->
+<div class="section" id="sec3">
+  <div class="sec-title">🟡 DMZ, pfSense & Messagerie</div>
+  <div class="sec-sub">Architecture DMZ, règles pfSense, serveur de messagerie sécurisé et RGPD.</div>
+
+  <!-- DMZ -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--yellow)"></span>Architecture DMZ — principe et règles</div>
+    <div class="g2">
+      <div>
+        <div class="code">Internet ← WAN → [pfSense] ← DMZ → [Serveur Web]
+                              ↕
+                             LAN (réseau interne)</div>
+        <div class="rule yellow" style="margin-top:10px">
+          <strong>Principe de cloisonnement :</strong> si le serveur web est compromis, l'attaquant ne peut pas atteindre le LAN car la DMZ est un réseau séparé avec des règles de filtrage strictes.
+        </div>
+      </div>
+      <div>
+        <div class="keypoint"><span class="kp-icon">✅</span><div class="kp-text"><strong>Internet → DMZ port 443</strong> : autorisé (accès HTTPS au serveur web)</div></div>
+        <div class="keypoint"><span class="kp-icon">✅</span><div class="kp-text"><strong>LAN → DMZ</strong> : autorisé avec contrôle (admins)</div></div>
+        <div class="keypoint"><span class="kp-icon">🚫</span><div class="kp-text"><strong>DMZ → LAN</strong> : <em>toujours bloqué</em> — le serveur web ne doit jamais initier de connexion vers le LAN</div></div>
+        <div class="keypoint"><span class="kp-icon">🚫</span><div class="kp-text"><strong>DMZ → Internet</strong> : bloqué par défaut sauf si nécessaire (mises à jour…)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- pfSense règles -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--yellow)"></span>Règles pfSense — syntaxe à connaître</div>
+    <table class="tbl">
+      <tr><th>Objectif</th><th>Interface</th><th>Source</th><th>Destination</th><th>Port</th><th>Action</th></tr>
+      <tr><td>Accès HTTPS depuis Internet</td><td>WAN</td><td>any</td><td>IP DMZ serveur</td><td>443</td><td><span class="badge b-green">Pass</span></td></tr>
+      <tr><td>Bloquer DMZ → LAN</td><td>DMZ</td><td>DMZ net</td><td>LAN net</td><td>any</td><td><span class="badge b-red">Block</span></td></tr>
+      <tr><td>LAN relève courrier IMAPS</td><td>LAN</td><td>192.168.1.0/24</td><td>IP serveur mail</td><td>993</td><td><span class="badge b-green">Pass</span></td></tr>
+      <tr><td>Accès SMTP authentifié</td><td>LAN</td><td>192.168.1.0/24</td><td>IP serveur mail</td><td>587</td><td><span class="badge b-green">Pass</span></td></tr>
+      <tr><td>Redirection HTTP → serveur</td><td>WAN (NAT)</td><td>any</td><td>IP publique:80</td><td>80</td><td>→ IP_DMZ:80</td></tr>
+    </table>
+    <div class="rule yellow" style="margin-top:12px">💡 <strong>Ordre des règles pfSense :</strong> les règles sont évaluées de haut en bas, première correspondance gagne. Mettre les règles spécifiques <em>avant</em> les règles générales.</div>
+  </div>
+
+  <!-- Messagerie -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--coral)"></span>Serveur de messagerie sécurisé — Postfix + Dovecot</div>
+    <div class="g2">
+      <div>
+        <div class="mcard" style="margin-bottom:10px">
+          <div class="mcard-lbl">Postfix (SMTP) — envoi</div>
+          <div class="mcard-val">
+            Port <strong>25</strong> : échanges inter-serveurs (MTA↔MTA)<br>
+            Port <strong>587</strong> : soumission client authentifié (SASL + TLS)<br>
+            Port <strong>465</strong> : SMTPS (déprécié, éviter)
+          </div>
+        </div>
+        <div class="mcard">
+          <div class="mcard-lbl">Dovecot (IMAP) — réception</div>
+          <div class="mcard-val">
+            Port <strong>143</strong> : IMAP non chiffré (à éviter)<br>
+            Port <strong>993</strong> : IMAPS (IMAP over TLS) ✅
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="keypoint"><span class="kp-icon">🚫</span><div class="kp-text"><strong>Open relay</strong> — serveur SMTP qui accepte d'envoyer des mails pour n'importe qui sans authentification → spam massif, blacklist</div></div>
+        <div class="keypoint"><span class="kp-icon">✅</span><div class="kp-text"><strong>SASL obligatoire</strong> — impose une authentification avant tout envoi de mail</div></div>
+        <div class="keypoint"><span class="kp-icon">✅</span><div class="kp-text"><strong>TLS obligatoire</strong> — chiffrer le transport entre client et serveur</div></div>
+        <div class="keypoint"><span class="kp-icon">📋</span><div class="kp-text"><strong>RGPD</strong> — les logs de messagerie contiennent des données personnelles → durée de rétention limitée, accès restreint</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Défense en profondeur -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--green)"></span>Défense en profondeur — en cas de faille</div>
+    <div class="g3">
+      <div class="mcard">
+        <div class="mcard-lbl">Supervision</div>
+        <div class="mcard-val">IDS/IPS, analyse des logs en temps réel, alertes sur anomalies</div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-lbl">Isolation</div>
+        <div class="mcard-val">VLAN, segmentation réseau, règles de pare-feu restrictives</div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-lbl">Restauration</div>
+        <div class="mcard-val">Snapshots réguliers des VMs, sauvegardes hors-ligne, plan de reprise</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION 4 : PROXY & VPN ═══════════════ -->
+<div class="section" id="sec4">
+  <div class="sec-title">🟢 Proxy & VPN</div>
+  <div class="sec-sub">Rôle du proxy, types de VPN, tunnels site-à-site et détection des flux anormaux.</div>
+
+  <!-- Proxy -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--green)"></span>Proxy HTTP — rôles et effets</div>
+    <div class="g2">
+      <div>
+        <table class="tbl">
+          <tr><th>Type</th><th>Comportement</th></tr>
+          <tr><td><strong>Proxy transparent</strong></td><td>Le client ne le sait pas. Le trafic est redirigé automatiquement (port 80/443 → proxy). L'IP source vue par le serveur = IP du proxy.</td></tr>
+          <tr><td><strong>Proxy explicite</strong></td><td>Le client est configuré manuellement. Envoie ses requêtes au proxy qui les relaie.</td></tr>
+          <tr><td><strong>Proxy inverse (reverse)</strong></td><td>Côté serveur. Reçoit les requêtes d'Internet et les redirige vers les serveurs internes. Rôle de load balancer + cache.</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="keypoint"><span class="kp-icon">✅</span><div class="kp-text"><strong>Cache</strong> — stocke les réponses HTTP pour accélérer les accès répétés et réduire la bande passante</div></div>
+        <div class="keypoint"><span class="kp-icon">✅</span><div class="kp-text"><strong>Filtrage URL</strong> — bloque les sites non autorisés (listes noires, catégories)</div></div>
+        <div class="keypoint"><span class="kp-icon">✅</span><div class="kp-text"><strong>Logs</strong> — trace toutes les requêtes HTTP des utilisateurs (RGPD !)</div></div>
+        <div class="keypoint"><span class="kp-icon">⚠️</span><div class="kp-text"><strong>Contournement HTTPS</strong> — un tunnel HTTPS peut contourner le proxy si le filtrage SSL n'est pas configuré</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VPN -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--teal)"></span>VPN — types et usages</div>
+    <table class="tbl">
+      <tr><th>Type</th><th>Usage</th><th>Protocole</th><th>Caractéristiques</th></tr>
+      <tr><td><strong>VPN site-à-site</strong></td><td>Relier deux réseaux distants (sièges, agences)</td><td>IPsec, OpenVPN</td><td>Tunnel permanent, transparent pour les utilisateurs</td></tr>
+      <tr><td><strong>VPN client-réseau</strong></td><td>Télétravail — un utilisateur accède au LAN distant</td><td>OpenVPN, WireGuard, SSL VPN</td><td>Logiciel sur le poste client</td></tr>
+      <tr><td><strong>VPN split tunneling</strong></td><td>Seul le trafic interne passe par le VPN, Internet passe direct</td><td>Configurable</td><td>⚠️ Risque : le trafic Internet n'est pas filtré par l'entreprise</td></tr>
+    </table>
+    <div class="rule teal" style="margin-top:12px">💡 <strong>IPsec :</strong> fonctionne en couche 3 — chiffre les paquets IP directement. Deux modes : <strong>Transport</strong> (chiffre uniquement le payload) et <strong>Tunnel</strong> (encapsule le paquet IP entier dans un nouveau paquet).</div>
+  </div>
+
+  <!-- Tunnel VPN config -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--teal)"></span>VPN site-à-site — ce qu'il faut configurer</div>
+    <div class="g2">
+      <div>
+        <div class="mcard" style="margin-bottom:10px">
+          <div class="mcard-lbl">Côté Siège A (10.0.1.0/24)</div>
+          <div class="mcard-val">
+            IP publique : 203.0.113.1<br>
+            Réseau local : 10.0.1.0/24<br>
+            Route → 10.0.2.0/24 via tunnel
+          </div>
+        </div>
+        <div class="mcard">
+          <div class="mcard-lbl">Côté Agence B (10.0.2.0/24)</div>
+          <div class="mcard-val">
+            IP publique : 198.51.100.1<br>
+            Réseau local : 10.0.2.0/24<br>
+            Route → 10.0.1.0/24 via tunnel
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="keypoint"><span class="kp-icon">🔑</span><div class="kp-text"><strong>Authentification mutuelle</strong> — certificats ou clés pré-partagées (PSK) des deux côtés</div></div>
+        <div class="keypoint"><span class="kp-icon">🔒</span><div class="kp-text"><strong>Algorithmes</strong> — Phase 1 : IKE (échange de clés). Phase 2 : ESP (chiffrement AES) + authentification</div></div>
+        <div class="keypoint"><span class="kp-icon">📊</span><div class="kp-text"><strong>Supervision</strong> — surveiller l'état du tunnel (up/down), les logs IKE, la latence</div></div>
+        <div class="keypoint"><span class="kp-icon">🔄</span><div class="kp-text"><strong>Haute disponibilité</strong> — tunnel de secours sur une autre interface WAN (failover)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Détection flux anormaux -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--red)"></span>Détecter les flux anormaux dans les logs proxy</div>
+    <table class="tbl">
+      <tr><th>Indicateur suspect</th><th>Ce que ça peut signifier</th></tr>
+      <tr><td>Requêtes HTTPS vers un domaine inconnu à intervalles réguliers</td><td>Beacon C2 (malware communiquant avec son serveur de contrôle)</td></tr>
+      <tr><td>Gros volume de données sortantes vers une IP étrangère</td><td>Exfiltration de données</td></tr>
+      <tr><td>Connexion SSH ou VPN depuis une IP inhabituelle</td><td>Compromission de credentials</td></tr>
+      <tr><td>Requêtes DNS vers des sous-domaines très longs et aléatoires</td><td>DNS tunneling (exfiltration via DNS)</td></tr>
+      <tr><td>Tunnel HTTPS contournant le proxy</td><td>Tentative de bypass du filtrage</td></tr>
+    </table>
+    <div class="rule red" style="margin-top:12px">⚠️ <strong>VPN non autorisé sur le réseau d'entreprise</strong> — un utilisateur qui installe un VPN personnel peut contourner tous les contrôles de sécurité (filtrage URL, IDS, logs). À détecter et bloquer.</div>
+  </div>
+
+  <!-- Récap architecture -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Architecture complète typique — à savoir schématiser</div>
+    <div class="code">Internet
+    |
+[Pare-feu WAN] ← pfSense / iptables
+    |
+   DMZ ──── Serveur Web (443)
+    |         Serveur Mail (25/587/993)
+    |         Proxy sortant
+    |
+[Pare-feu interne]
+    |
+   LAN ──── Postes utilisateurs
+             Serveurs internes
+             Annuaire LDAP/AD
+    |
+[VPN concentrateur] ←── Télétravail / Site distant</div>
+    <div class="rule" style="margin-top:10px">💡 <strong>À retenir pour l'exam :</strong> le proxy est dans la DMZ ou sur le pare-feu. Le VPN concentrateur est côté LAN ou sur le pare-feu. Les flux DMZ→LAN sont toujours bloqués par défaut.</div>
+  </div>
+</div>
+
+</div><!-- end sections -->
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
